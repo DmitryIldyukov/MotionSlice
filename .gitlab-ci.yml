@@ -1,0 +1,124 @@
+stages:
+  - build
+  - test
+  - release
+  - cleanup
+
+variables:
+  DOTNET_VERSION: "10.0"
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  script:
+    - dotnet build
+  only:
+    - branches
+  except:
+    - /^release\/.*$/
+    - /^hotfix\/.*$/
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  script:
+    - dotnet test
+  only:
+    - branches
+  except:
+    - /^release\/.*$/
+    - /^hotfix\/.*$/
+
+# ============ RELEASE PIPELINE ============
+create_release:
+  stage: release
+  image: alpine:latest
+  script:
+    - echo "Release created from dev branch"
+    - echo "Version: $CI_COMMIT_TAG"
+  only:
+    - /^release\/.*$/
+  when: manual
+
+merge_release_to_main:
+  stage: release
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git config --global user.email "ci@example.com"
+    - git config --global user.name "GitLab CI"
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git checkout main
+    - git merge --no-ff ${CI_COMMIT_REF_NAME} -m "Merge ${CI_COMMIT_REF_NAME} into main"
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git main
+  only:
+    - /^release\/.*$/
+  when: manual
+
+merge_release_back_to_dev:
+  stage: release
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git config --global user.email "ci@example.com"
+    - git config --global user.name "GitLab CI"
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git checkout dev
+    - git merge --no-ff ${CI_COMMIT_REF_NAME} -m "Merge ${CI_COMMIT_REF_NAME} back to dev"
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git dev
+  only:
+    - /^release\/.*$/
+  when: manual
+
+cleanup_release:
+  stage: cleanup
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git --delete ${CI_COMMIT_REF_NAME}
+  only:
+    - /^release\/.*$/
+  when: manual
+
+# ============ HOTFIX PIPELINE ============
+merge_hotfix_to_main:
+  stage: release
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git config --global user.email "ci@example.com"
+    - git config --global user.name "GitLab CI"
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git checkout main
+    - git merge --no-ff ${CI_COMMIT_REF_NAME} -m "Merge ${CI_COMMIT_REF_NAME} into main"
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git main
+  only:
+    - /^hotfix\/.*$/
+  when: manual
+
+merge_hotfix_to_dev:
+  stage: release
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git config --global user.email "ci@example.com"
+    - git config --global user.name "GitLab CI"
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git checkout dev
+    - git merge --no-ff ${CI_COMMIT_REF_NAME} -m "Merge ${CI_COMMIT_REF_NAME} into dev"
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git dev
+  only:
+    - /^hotfix\/.*$/
+  when: manual
+
+cleanup_hotfix:
+  stage: release
+  image: alpine:latest
+  script:
+    - apk add --no-cache git curl
+    - git clone https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git .
+    - git push https://oauth2:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git --delete ${CI_COMMIT_REF_NAME}
+  only:
+    - /^hotfix\/.*$/
+  when: manual
