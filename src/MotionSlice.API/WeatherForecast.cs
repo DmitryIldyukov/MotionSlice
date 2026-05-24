@@ -1,4 +1,4 @@
-namespace TaskFlow.API;
+namespace MotionSlice.API;
 
 public class WeatherForecast
 {

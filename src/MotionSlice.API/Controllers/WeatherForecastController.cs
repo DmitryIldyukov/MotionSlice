@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TaskFlow.API.Controllers;
+namespace MotionSlice.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
