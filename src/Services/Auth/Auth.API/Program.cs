@@ -1,3 +1,4 @@
+using Auth.API.Endpoints;
 using Auth.API.Extensions;
 using Auth.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,6 +30,8 @@ public class Program
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.MapAuthEndpoints();
 
         app.Run();
     }
