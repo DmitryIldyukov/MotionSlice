@@ -1,4 +1,6 @@
+using Auth.API.Extensions;
 using Auth.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API;
@@ -15,9 +17,18 @@ public class Program
             options.UseNpgsql( connectionString );
         } );
 
+        builder.Services.AddAuthentication( options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            } )
+            .AddJwtAuthentication( builder.Configuration );
+
         WebApplication app = builder.Build();
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.Run();
     }
