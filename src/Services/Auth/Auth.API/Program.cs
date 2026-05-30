@@ -26,7 +26,15 @@ public class Program
             .AddJwtAuthentication( builder.Configuration )
             .AddGoogleAuthentication( builder.Configuration );
 
+        builder.Services.AddSwagger();
+
         WebApplication app = builder.Build();
+
+        if ( app.Environment.IsDevelopment() )
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
         app.UseHttpsRedirection();
         app.UseAuthentication();
