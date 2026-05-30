@@ -19,6 +19,9 @@ bld/
 .vs/
 .vscode/
 
+# Rider
+.idea/
+
 # User-specific files
 *.rsuser
 *.suo
