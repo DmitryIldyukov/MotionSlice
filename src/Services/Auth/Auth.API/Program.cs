@@ -23,7 +23,8 @@ public class Program
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             } )
-            .AddJwtAuthentication( builder.Configuration );
+            .AddJwtAuthentication( builder.Configuration )
+            .AddGoogleAuthentication( builder.Configuration );
 
         WebApplication app = builder.Build();
 
