@@ -1,5 +1,6 @@
 using Auth.API.Endpoints;
 using Auth.API.Extensions;
+using Auth.Infrastructure;
 using Auth.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +16,10 @@ public class Program
         string? connectionString = builder.Configuration.GetConnectionString( "PostgresConnection" );
         builder.Services.AddDbContext<AuthDbContext>( options =>
         {
-            options.UseNpgsql( connectionString );
+            options.UseNpgsql( connectionString ).UseSnakeCaseNamingConvention();
         } );
+
+        builder.Services.AddInfrastructure();
 
         builder.Services.AddAuthentication( options =>
             {
