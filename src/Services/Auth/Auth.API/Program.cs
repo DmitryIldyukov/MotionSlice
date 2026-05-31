@@ -29,6 +29,7 @@ public class Program
             .AddJwtAuthentication( builder.Configuration )
             .AddGoogleAuthentication( builder.Configuration );
 
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwagger();
 
         WebApplication app = builder.Build();
