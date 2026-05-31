@@ -6,7 +6,7 @@ namespace Auth.API.Endpoints;
 
 public static class AuthEndpoints
 {
-    private readonly static string GoogleCallbackEndpointName  = "GoogleCallback";
+    private const string GoogleCallbackEndpointName = "GoogleCallback";
 
     public static void MapAuthEndpoints( this IEndpointRouteBuilder app )
     {
@@ -42,7 +42,7 @@ public static class AuthEndpoints
 
         group.MapGet( "login/google/callback", async ( HttpContext context ) =>
         {
-            var result = await context.AuthenticateAsync( AuthorizeExtension.GoogleExternalScheme );
+            AuthenticateResult result = await context.AuthenticateAsync( AuthorizeExtension.GoogleExternalScheme );
 
             return Results.Ok();
         } )
