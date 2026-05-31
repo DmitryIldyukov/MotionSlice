@@ -12,7 +12,7 @@ public class User : Entity
 
     public User( string email )
     {
-        Email = email;
+        Email = email.ToLowerInvariant();
     }
 
     public ExternalLogin AddExternalLogin( string provider, string providerKey )
