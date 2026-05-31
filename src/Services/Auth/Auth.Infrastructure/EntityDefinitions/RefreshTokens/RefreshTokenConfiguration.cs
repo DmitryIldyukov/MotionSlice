@@ -34,5 +34,7 @@ public class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
             .HasColumnName( "replaced_by_token_hash" );
 
         builder.HasIndex( rt => rt.TokenHash ).IsUnique();
+
+        builder.HasIndex( rt => rt.UserId );
     }
 }
