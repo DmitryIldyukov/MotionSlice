@@ -7,31 +7,31 @@ MotionSlice/
 ├── src/
 │   ├── Services/
 │   │   ├── Auth/
-│   │   │   ├── MotionSlice.Auth.API/
-│   │   │   ├── MotionSlice.Auth.Application/
-│   │   │   ├── MotionSlice.Auth.Domain/
-│   │   │   └── MotionSlice.Auth.Infrastructure/
+│   │   │   ├── Auth.API/
+│   │   │   ├── Auth.Application/
+│   │   │   ├── Auth.Domain/
+│   │   │   └── Auth.Infrastructure/
 │   │   ├── Users/
-│   │   │   ├── MotionSlice.Users.API/
-│   │   │   ├── MotionSlice.Users.Application/
-│   │   │   ├── MotionSlice.Users.Domain/
-│   │   │   └── MotionSlice.Users.Infrastructure/
+│   │   │   ├── Users.API/
+│   │   │   ├── Users.Application/
+│   │   │   ├── Users.Domain/
+│   │   │   └── Users.Infrastructure/
 │   │   └── ArticleSlice/
-│   │       ├── MotionSlice.ArticleSlice.API/
-│   │       ├── MotionSlice.ArticleSlice.Application/
-│   │       ├── MotionSlice.ArticleSlice.Domain/
-│   │       └── MotionSlice.ArticleSlice.Infrastructure/
+│   │       ├── ArticleSlice.API/
+│   │       ├── ArticleSlice.Application/
+│   │       ├── ArticleSlice.Domain/
+│   │       └── ArticleSlice.Infrastructure/
 │   ├── Gateway/
-│   │   └── MotionSlice.Gateway/
+│   │   └── Gateway/
 │   └── Shared/
-│       └── MotionSlice.Shared.Contracts/
+│       └── Shared.Contracts/
 ├── tests/
 │   ├── Auth/
-│   │   ├── MotionSlice.Auth.UnitTests/
-│   │   └── MotionSlice.Auth.IntegrationTests/
+│   │   ├── Auth.UnitTests/
+│   │   └── Auth.IntegrationTests/
 │   └── ArticleSlice/
-│       ├── MotionSlice.ArticleSlice.UnitTests/
-│       └── MotionSlice.ArticleSlice.IntegrationTests/
+│       ├── ArticleSlice.UnitTests/
+│       └── ArticleSlice.IntegrationTests/
 ├── frontend/
 ├── infrastructure/
 │   ├── docker-compose.yml
