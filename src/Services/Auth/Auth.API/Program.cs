@@ -34,6 +34,12 @@ public class Program
 
         WebApplication app = builder.Build();
 
+        using ( IServiceScope scope = app.Services.CreateScope() )
+        {
+            AuthDbContext dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+            dbContext.Database.Migrate();
+        }
+
         if ( app.Environment.IsDevelopment() )
         {
             app.UseSwagger();
