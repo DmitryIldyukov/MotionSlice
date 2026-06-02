@@ -32,6 +32,7 @@ bld/
 # Local settings
 appsettings.local.json
 appsettings.Development.json
+infrastructure/.env
 
 # OS
 .DS_Store

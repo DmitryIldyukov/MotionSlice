@@ -1,0 +1,51 @@
+name: motionslice-auth
+
+services:
+  auth-postgres:
+    image: postgres:17-alpine
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: ${AUTH_DB_NAME:-auth}
+      POSTGRES_USER: ${AUTH_DB_USER:-auth}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD:-auth}
+    ports:
+      - "${AUTH_DB_PORT:-5432}:5432"
+    volumes:
+      - auth-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AUTH_DB_USER:-auth} -d ${AUTH_DB_NAME:-auth}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - auth-net
+
+  auth-api:
+    container_name: auth-api
+    build:
+      context: ..
+      dockerfile: src/Services/Auth/Auth.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__PostgresConnection: "Host=auth-postgres;Port=5432;Database=${AUTH_DB_NAME:-auth};Username=${AUTH_DB_USER:-auth};Password=${AUTH_DB_PASSWORD:-auth}"
+      JwtOptions__SecretKey: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      Authentication__Google__ClientId: ${GOOGLE_CLIENT_ID:-}
+      Authentication__Google__ClientSecret: ${GOOGLE_CLIENT_SECRET:-}
+    ports:
+      - "${AUTH_API_PORT:-5104}:8080"
+    depends_on:
+      auth-postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - auth-net
+
+volumes:
+  auth-postgres-data:
+
+networks:
+  auth-net:
+    driver: bridge
