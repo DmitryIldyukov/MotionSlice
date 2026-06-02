@@ -1,0 +1,24 @@
+# Build output
+**/bin/
+**/obj/
+**/out/
+
+# IDE / VCS
+**/.vs/
+**/.vscode/
+**/.idea/
+.git/
+.github/
+
+# Local settings (не должны попадать в образ)
+**/appsettings.local.json
+**/appsettings.Development.json
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+infrastructure/.env
+
+# Не нужно для сборки бэкенда
+frontend/
+docs/
