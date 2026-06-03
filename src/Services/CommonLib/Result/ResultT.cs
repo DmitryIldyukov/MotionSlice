@@ -1,6 +1,6 @@
 ﻿namespace CommonLib.Result
 {
-    public class ResultT<T>
+    public class ResultT<T> : IResultFailure<ResultT<T>>
     {
         public T Value { get; }
         public IReadOnlyList<string> ErrorMessages { get; }
@@ -27,6 +27,11 @@
         public static ResultT<T?> Fail( string errorMessage )
         {
             return new ResultT<T?>( default, new List<string>() { errorMessage }, null );
+        }
+
+        public static ResultT<T> Failure( IEnumerable<string> errorMessages )
+        {
+            return new ResultT<T>( default!, errorMessages, null );
         }
     }
 }

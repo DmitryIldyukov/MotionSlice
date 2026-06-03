@@ -1,6 +1,6 @@
 ﻿namespace CommonLib.Result
 {
-    public class Result
+    public class Result : IResultFailure<Result>
     {
         public IReadOnlyList<string> ErrorMessages { get; }
         public string? SuccessMessage { get; }
@@ -28,6 +28,11 @@
             {
                 errorMessage
             }, null );
+        }
+
+        public static Result Failure( IEnumerable<string> errorMessages )
+        {
+            return Fail( errorMessages );
         }
     }
 }
